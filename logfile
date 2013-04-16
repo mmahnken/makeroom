@@ -1,0 +1,39 @@
+LOG:  database system was shut down at 2013-04-15 12:21:33 PDT
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  database "meggiemahnken" does not exist
+FATAL:  database "test" does not exist
+FATAL:  database "meggiemahnken" does not exist
+ERROR:  column "spclocation" does not exist at character 80
+STATEMENT:  SELECT spcname AS "Name",
+	  pg_catalog.pg_get_userbyid(spcowner) AS "Owner",
+	  spclocation AS "Location"
+	FROM pg_catalog.pg_tablespace
+	ORDER BY 1;
+FATAL:  database "meggiemahnken" does not exist
+ERROR:  syntax error at or near "use" at character 1
+STATEMENT:  use postgres;
+ERROR:  syntax error at or near "5" at character 20
+STATEMENT:  insert into sampe (5, 'hello');
+ERROR:  syntax error at or near "5" at character 21
+STATEMENT:  insert into sample (5, 'hello');
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "posts" does not exist at character 15
+STATEMENT:  select * from posts;
+ERROR:  relation "users" does not exist at character 15
+STATEMENT:  select * from users;
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  schema "mrdatabase" does not exist at character 15
+STATEMENT:  select * from mrdatabase.user;
+ERROR:  schema "mrdatabase" does not exist at character 15
+STATEMENT:  select * from mrdatabase.user;
+ERROR:  syntax error at or near "'mrdatabase'" at character 15
+STATEMENT:  select * from 'mrdatabase'.user;
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "posts" does not exist at character 15
+STATEMENT:  SELECT * FROM Posts;
+ERROR:  relation "author" does not exist at character 15
+STATEMENT:  SELECT * FROM Author;
+ERROR:  relation "posts" does not exist at character 15
+STATEMENT:  SELECT * FROM Posts;

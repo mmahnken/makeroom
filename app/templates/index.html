@@ -1,52 +1,24 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title> {{title}} - microblog</title>
-		<meta name="viewport" content="width=device-width, inital-scale=1.0">
-		<!-- Bootstrap -->
-		<link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-	</head>
-	<body>
-		<div class="container-fluid" color="blue">
-			<div class="row-fluid" color="blue">
-				<div class="span2">
-				Welcome to Make Room
-				Ut ultrices aliquam cursus. Cras faucibus magna sed urna bibendum dapibus. Nullam erat purus, placerat sit amet adipiscing sit amet, aliquam ullamcorper diam. Sed sagittis ipsum et magna adipiscing at pretium ligula fringilla. Curabitur ac ante sit amet dolor consectetur convallis scelerisque id tellus. Aliquam a purus dui, ac placerat justo. Vivamus eget velit et velit semper sagittis eget vel lacus. In hac habitasse platea dictumst. Fusce volutpat massa vitae enim pellentesque ac suscipit dolor scelerisque. Proin ipsum felis, porta eu eleifend quis, tinci
-			</div>
-			<div class="span10">
-				<h1>Hello, {{user.nickname}}!</h1>
-				<div class="btn-group">
-					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						What subject do you teach?
-						<span class="caret"></span>
-					</a>
-					<u1 class="dropdown-menu">
-						<!--put links here -->
-						Science
-					</u1>
-					<u2 class="dropdown-menu">
-						Math
-					</u2>
-					<u3 class="dropdown-menu">
-						Science <br>
-						Math <br>
-						English <br>
-					</u3>
-				</div>
-				<script src="http://code.jquery.com/jquery.js"></script>
-				<script src="../static/bootstrap/js/bootstrap.min.js"></script>
-			</div>
+{% extends "base.html" %}
+{% block content %}
+<div class="span10">
+	<h1>Hello, {{user.nickname}}!</h1>
+		<div class="btn-group">
+			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			What subject do you teach?
+			<span class="caret"></span>
+			</a>
+			<u1 class="dropdown-menu">
+				Science <br>
+				Math <br>
+				English <br>
+			</u1>
 		</div>
+	<h2> Recent posts in your department: </h2>
+		{% for post in posts %}
+		<div><p>{{post.author.nickname}} says: <b>{{post.body}}</b></p></div>
+		{% endfor %}
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+</div>
+{% endblock %}
 
-	</body>
-
-</html>
-
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-
-</body>
-</html>
