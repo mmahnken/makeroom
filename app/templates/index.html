@@ -2,7 +2,15 @@
 {% block content %}
 <div class="span10">
 	<h1>Hello, {{user.nickname}}!</h1>
-		<div class="btn-group">
+	<h2> Recent posts in your department: </h2>
+		{% for post in posts %}
+		<div><p>{{post.author.nickname}} says: <b>{{post.body}}</b></p></div>
+		{% endfor %} <br> <br> <br>
+	<h5> Account Settings <br> Email: {{user.email}} <br>
+	Admin? {{user.role}} <br>
+	Posts: {{user.posts}} <br> </h5>
+	
+		<!-- <div class="btn-group">
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 			What subject do you teach?
 			<span class="caret"></span>
@@ -12,13 +20,13 @@
 				Math <br>
 				English <br>
 			</u1>
-		</div>
-	<h2> Recent posts in your department: </h2>
-		{% for post in posts %}
-		<div><p>{{post.author.nickname}} says: <b>{{post.body}}</b></p></div>
-		{% endfor %}
+		</div> -->
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </div>
+	
+	
+
+
 {% endblock %}
 

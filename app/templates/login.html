@@ -19,8 +19,7 @@ function set_openid(openid, pr)
 	<form action="" method="post" name="login">
 		{{form.hidden_tag()}}
 		<p>
-			Please enter your OpenID, or select from <br>
-			one of the providers below.<br>
+			Optional: Connect with OpenID by selecting one of the providers below.<br>
 			{{form.openid(size=80)}}
 			{% for error in form.errors.openid %}
 			<span style="color: red;">[{{error}}]</span>
@@ -30,18 +29,13 @@ function set_openid(openid, pr)
 			{% endfor %}
 		</p>
 		<p>
-			{{form.school_name}} School Name</p>
-			{% for error in form.errors.school_name %}
+			{{form.dev_login}} username</p>
+			{% for error in form.errors.dev_login %}
 			<span style="color: red;">[{{error}}]</span>
 			{% endfor %}
 		<p>
-			{{form.subject}} Subject</p>
-			{% for error in form.errors.subject %}
-			<span style="color: red;">[{{error}}]</span>
-			{% endfor %}
-		<p>
-			{{form.school_state}} State</p>
-			{% for error in form.errors.school_state %}
+			{{form.dev_email}} email</p>
+			{% for error in form.errors.dev_email %}
 			<span style="color: red;">[{{error}}]</span>
 			{% endfor %}
 		<p>

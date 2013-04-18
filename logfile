@@ -37,3 +37,22 @@ ERROR:  relation "author" does not exist at character 15
 STATEMENT:  SELECT * FROM Author;
 ERROR:  relation "posts" does not exist at character 15
 STATEMENT:  SELECT * FROM Posts;
+ERROR:  column author.subject does not exist at character 126
+STATEMENT:  SELECT author.id AS author_id, author.nickname AS author_nickname, author.email AS author_email, author.role AS author_role, author.subject AS author_subject 
+	FROM author 
+	WHERE author.id = 2
+ERROR:  column author.subject does not exist at character 126
+STATEMENT:  SELECT author.id AS author_id, author.nickname AS author_nickname, author.email AS author_email, author.role AS author_role, author.subject AS author_subject 
+	FROM author 
+	WHERE author.id = 2
+ERROR:  syntax error at or near "FROM" at character 31
+STATEMENT:  SELECT * FROM Users.
+	SELECT * FROM Author;
+ERROR:  column author.username does not exist at character 68
+STATEMENT:  SELECT author.id AS author_id, author.nickname AS author_nickname, author.username AS author_username, author.email AS author_email, author.role AS author_role, author.subject AS author_subject, author.user_department AS author_user_department 
+	FROM author 
+	WHERE author.id = 2
+ERROR:  column author.username does not exist at character 68
+STATEMENT:  SELECT author.id AS author_id, author.nickname AS author_nickname, author.username AS author_username, author.email AS author_email, author.role AS author_role, author.subject AS author_subject, author.user_department AS author_user_department 
+	FROM author 
+	WHERE author.id = 2

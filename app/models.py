@@ -6,12 +6,29 @@ ROLE_ADMIN = 1
 class Author(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	nickname = db.Column(db.String(64), index = True, unique = True)
+	username = db.Column(db.String(64), index = True, unique = True)
 	email = db.Column(db.String(120), index = True, unique = True)
 	role = db.Column(db.SmallInteger, default = ROLE_USER)
+	subject = db.Column(db.String(120), index = True, unique = False)
+	user_department = db.Column(db.String(120), 
+					db.ForeignKey('department.department_id'))
 	posts = db.relationship('Post', backref = 'writer', lazy = 'dynamic')
 
+	def is_authenticated(self):
+		return True
+	
+	def is_active(self):
+		return True
+	
+	def is_anonymous(self):
+		return False
+	
+	def get_id(self):
+		return unicode(self.id)
+	
 	def __repr__(self):
 		return '<User %r>' % (self.nickname)
+
 
 class Post(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
@@ -21,5 +38,16 @@ class Post(db.Model):
 
 	def __repr__(self):
 		return '<Post %r>' % (self.body)
+
+
+class Department(db.Model):
+	department_id = db.Column(db.Integer, primary_key = True)
+	state = db.Column(db.String(120))
+	school_id = db.Column(db.String(120), index = True, unique = False)
+	authors = db.relationship('Author', backref = 'teacher', lazy = 'dynamic')
+
+	def __repr__(self):
+		return '<Department %r>' % (self.department_id)
+
 
 

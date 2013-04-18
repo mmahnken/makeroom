@@ -16,8 +16,11 @@
 	<body>
 		<div class="container-fluid">
 			<div class="row-fluid">
-				<div class="span2">
-				<style> div {font-size: 25px} </style>Welcome to <a href-"/index">Make Room</a> <br> <br>
+				<div class="span2"> Welcome to
+				<style> div {font-size: 25px} </style> <a href="{{ url_for('index') }}">Make Room</a> <br> <br>
+				{% if g.user.is_authenticated() %}
+				| <a href="{{ url_for('logout') }}">Logout</a>
+				{% endif %}
 		</div>
 		<hr>
 		{% with messages = get_flashed_messages() %}

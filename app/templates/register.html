@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="span10">
+	<h2> Register with your department </h2> 
+	<form action="/registration_saved" method="post" name="register">
+		{{form.hidden_tag()}}
+		<p>
+			{{form.username}} Name on Make Room</p>
+			{% for error in form.errors.nickname %}
+			<span style="color: red;">[{{error}}]</span>
+			{% endfor %}
+		<p>
+			{{form.subject}} What subject do you teach?</p>
+			{% for error in form.errors.school_state %}
+			<span style="color: blue;">[{{error}}]</span>
+			{% endfor %}
+		<p>
+			{{form.department_id}} Department ID</p>
+			{% for error in form.errors.department_id %}
+			<span style="color: blue;">[{{error}}]</span>
+			{% endfor %} 
+ 		<p>
+			<input type="submit" value="Sign In"></p>
+	</form>
+
+ {% endblock %}

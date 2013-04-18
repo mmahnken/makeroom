@@ -2,8 +2,17 @@ from flask.ext.wtf import Form, TextField, BooleanField
 from flask.ext.wtf import Required
 
 class LoginForm(Form):
-	openid = TextField('openid', validators = [Required()])
+	openid = TextField('openid')
 	remember_me = BooleanField('remember_me', default = False)
-	school_name = TextField('school_name', validators = [Required()])
-	school_state = TextField('school_state', validators = [Required()])
+	dev_login = TextField('dev_login')
+	dev_email = TextField('dev_email')
+	
+class RegisterForm(Form):
+	username = TextField('username', validators = [Required()])
 	subject = TextField('subject', validators = [Required()])
+	department_id = TextField('department_id', validators = [Required()])
+
+
+
+
+
