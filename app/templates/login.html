@@ -28,7 +28,7 @@ function set_openid(openid, pr)
 			<a href="javascript:set_openid('{{pr.url}}', '{{pr.name}}');">{{pr.name}}</a> |
 			{% endfor %}
 		</p>
-		<p>
+		<!-- <p>
 			{{form.dev_login}} username</p>
 			{% for error in form.errors.dev_login %}
 			<span style="color: red;">[{{error}}]</span>
@@ -37,7 +37,7 @@ function set_openid(openid, pr)
 			{{form.dev_email}} email</p>
 			{% for error in form.errors.dev_email %}
 			<span style="color: red;">[{{error}}]</span>
-			{% endfor %}
+			{% endfor %} -->
 		<p>
 			{{form.remember_me}} Remember Me</p>
 		<p>

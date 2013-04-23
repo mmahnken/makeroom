@@ -1,0 +1,38 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="span10">
+	{% if date %}
+	<h1> {{date.month}} / {{date.day}} / {{date.year}}</h1>
+	{% else %}
+	<h1> Welcome to Posts </h1>
+	{% endif %}
+	<h2> Your posts: </h2>
+		<div><p> </p> </div>
+		{% if user_posts %}
+		{% for p in user_posts %}
+		<div>
+			<p> {{p.body}} </p></div>
+				<h4>Posted on {{p.timestamp.month}}/{{p.timestamp.day}} 
+					at {{p.timestamp.hour}}:{{p.timestamp.minute}} </h4><br>
+		{% endfor %}
+		{% else %}
+		<div><p> You haven't posted anything. </p></div> 
+		{% endif %}
+		 <br>
+	<h2> Department posts: </h2>
+		<div> <p> </p> </div>
+		{% if dept_posts %}
+		{% for p in dept_posts %}
+		<div><h5> {{p.Author.username}} </h5>
+			<p> {{p.body}} </p> </div>
+			<h4> Posted on {{p.timestamp.month}}/{{p.timestamp.day}} at {{p.timestamp.hour}}:{{p.timestamp.minute}} </h4><br>
+		{% endfor %}
+		{% else %}
+		<div><p> Your department hasn't posted anything. </p></div> 
+		{% endif %}
+		 <br>
+
+
+{% endblock %}	 

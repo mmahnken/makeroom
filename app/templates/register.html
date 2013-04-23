@@ -6,12 +6,12 @@
 		{{form.hidden_tag()}}
 		<p>
 			{{form.username}} Name on Make Room</p>
-			{% for error in form.errors.nickname %}
+			{% for error in form.errors.username %}
 			<span style="color: red;">[{{error}}]</span>
 			{% endfor %}
 		<p>
 			{{form.subject}} What subject do you teach?</p>
-			{% for error in form.errors.school_state %}
+			{% for error in form.errors.subject %}
 			<span style="color: blue;">[{{error}}]</span>
 			{% endfor %}
 		<p>

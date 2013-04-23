@@ -1,26 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="span10">
-	<h1>Hello, {{user.nickname}}!</h1>
-	<h2> Recent posts in your department: </h2>
-		{% for post in posts %}
-		<div><p>{{post.author.nickname}} says: <b>{{post.body}}</b></p></div>
-		{% endfor %} <br> <br> <br>
-	<h5> Account Settings <br> Email: {{user.email}} <br>
-	Admin? {{user.role}} <br>
-	Posts: {{user.posts}} <br> </h5>
-	
-		<!-- <div class="btn-group">
-			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-			What subject do you teach?
-			<span class="caret"></span>
-			</a>
-			<u1 class="dropdown-menu">
-				Science <br>
-				Math <br>
-				English <br>
-			</u1>
-		</div> -->
+	<h1>Hello, {{user.username}}!</h1>
+	<form action='/post_saved' method='post' name="post">
+		{{form.hidden_tag()}}
+		<table>
+			<tr>
+				<td> Post a student update. </td>
+				<td>{{form.post(size = 30, maxlength = 140)}} </td>
+				<td> 
+				{% for error in form.errors.post %}
+				<span style = 'color: red;'>[{{error}}]</span><br>
+				{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Send to department page"></td>
+				<td></td>
+			</tr>
+		</table>
+	</form>
+	<h2> Account Settings </h2>
+	<h3> Email: </h3> <p> {{user.email}} </p>
+	<h3> Admin?</h3> <p> {{user.role}} </p>
+	{% if posts %}
+	<h3> Most Recent Post:</h3> <p> {{user.posts[-1].body}} </p>
+	{% endif %}
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </div>

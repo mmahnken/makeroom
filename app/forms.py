@@ -1,5 +1,5 @@
-from flask.ext.wtf import Form, TextField, BooleanField
-from flask.ext.wtf import Required
+from flask.ext.wtf import Form, TextField, BooleanField, Required
+
 
 class LoginForm(Form):
 	openid = TextField('openid')
@@ -12,6 +12,11 @@ class RegisterForm(Form):
 	subject = TextField('subject', validators = [Required()])
 	department_id = TextField('department_id', validators = [Required()])
 
+class NewPostForm(Form):
+	post = TextField('post', validators = [Required()])
+
+class ApiKeyForm(Form):
+	api_key = TextField('api_key', validators = [Required()])
 
 
 

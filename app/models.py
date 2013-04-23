@@ -1,5 +1,6 @@
 from app import db
 
+
 ROLE_USER = 0
 ROLE_ADMIN = 1
 
@@ -10,9 +11,9 @@ class Author(db.Model):
 	email = db.Column(db.String(120), index = True, unique = True)
 	role = db.Column(db.SmallInteger, default = ROLE_USER)
 	subject = db.Column(db.String(120), index = True, unique = False)
-	user_department = db.Column(db.String(120), 
-					db.ForeignKey('department.department_id'))
-	posts = db.relationship('Post', backref = 'writer', lazy = 'dynamic')
+	user_department = db.Column(db.Integer, 
+					db.ForeignKey('department.id'))
+	posts = db.relationship('Post', backref = 'Author', lazy = 'dynamic')
 
 	def is_authenticated(self):
 		return True
@@ -41,13 +42,13 @@ class Post(db.Model):
 
 
 class Department(db.Model):
-	department_id = db.Column(db.Integer, primary_key = True)
+	id = db.Column(db.Integer, primary_key = True)
 	state = db.Column(db.String(120))
 	school_id = db.Column(db.String(120), index = True, unique = False)
-	authors = db.relationship('Author', backref = 'teacher', lazy = 'dynamic')
+	authors = db.relationship('Author', backref = 'Department', lazy = 'dynamic')
 
 	def __repr__(self):
-		return '<Department %r>' % (self.department_id)
+		return '<Department %r>' % (self.id)
 
 
 

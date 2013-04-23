@@ -1,30 +1,21 @@
 from flask import render_template, flash, redirect, session, url_for, request, g 
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, oid 
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, NewPostForm, ApiKeyForm
 from models import Author, Department, Post, ROLE_USER, ROLE_ADMIN
+from datetime import datetime 
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
 	user = g.user 				#see the "before request" function
-	posts = [
-		{
-			'author': { 'nickname': 'Mrs. J'},
-			'body': 'Sarah can wear her iPod during tests.'
-		},
-		{
-			'author': {'nickname': 'Mrs. T'},
-			'body': 'Tim will complete a daily self-evaluation.'
-		}
-	]
+	form = NewPostForm()
 	return render_template("index.html",
 		title = 'Home',
 		user = user,
-		posts = posts) #The extra parameters (ie "title", 
-					   #"user" refer to variables 
-					   #that are in the Index HTML template.
+		form = form)
+
 
 @app.route("/login", methods = ['GET', 'POST'])
 @oid.loginhandler
@@ -41,9 +32,11 @@ def login():
 		form = form,
 		providers = app.config['OPENID_PROVIDERS']) 
 
+
 @lm.user_loader
 def load_user(id):
 	return Author.query.get(int(id))
+
 
 @oid.after_login
 def after_login(resp):
@@ -61,7 +54,7 @@ def after_login(resp):
 		nickname = resp.nickname
 		if nickname is None or nickname == "":
 			nickname = resp.email.split('@')[0]
-		user = Author(nickname = nickname, email = resp.email, subject = subject, role = ROLE_USER)
+		user = Author(nickname = nickname, email = resp.email, role = ROLE_USER)
 		db.session.add(user)
 		db.session.commit()
 	remember_me = False
@@ -78,55 +71,89 @@ def after_login(resp):
 	else:
 		return redirect(url_for('register'))
 
+
 @app.before_request
 def before_request():
 	#The current user is set by Flask-Login. Now there is a copy in
 	# the g object in order to have better access to the current user.
 	g.user = current_user
 
+
 @app.route('/logout')
 def logout():
 	logout_user()
 	return redirect(url_for('index'))
 
-@app.route('/user/<nickname>')
-@login_required
-def user(nickname):
-	user = Author.query.filter_by(nickname = nickname).first()
-	if user == None:
-		flash('User ' + nickname + ' not found.')
-		return redirect(url_for('index'))
-	posts = [
-		{ 'author': user, 'body': 'Test post #1'},
-		{ 'author':user, 'body': 'Test post #2' }
-	]
-	return render_template('user.html',
-		user = user,
-		posts = posts)
-
 
 @app.route('/register')
 def register():
 	form = RegisterForm()
-	return render_template('register.html',
-		title = 'register', #from base.html
+	return render_template('register.html', #from base.html
 		form = form)
+
+
+@app.route('/api_key_form')
+def register_api():
+	form = ApiKeyForm()
+	return render_template('api_key_form.html',
+		title = 'api_key_form', #from base.html
+		form = form)
+
+
+@app.route('/user/<nickname>')
+@login_required
+def user(nickname):
+	date = datetime.utcnow()
+	department_id = g.user.user_department
+	user = Author.query.filter_by(nickname = nickname).first()
+	department = Department.query.get(department_id)
+	if user == None:
+		flash('User' + nickname + " not found.")
+		return redirect(url_for('index'))
+	user_posts = Post.query.filter_by(user_id = user.id).all()
+	dept_posts = db.session.query(
+		Post).join(Post.Author).filter(
+		Author.user_department == g.user.user_department)
+	return render_template('profile.html', user_posts = user_posts,
+						date = date, user = user, 
+						dept_posts = dept_posts)
+	#put in jinja
+	for p in posts:
+		print p.body
+
+	# q = db.session.query(
+	# 	Author).join(Author.posts).filter(
+	# 	Author.user_department == g.user.user_department)
+	#count = db.session.query(Author).count()
+	# for num in range(count):
+	# 	post_count = q[num].posts.count()
+	# 	for num in range(post_count):
+	# 		print q[num].posts[num]
+	#return render_template("profile.html", posts = posts, 
+	#						date = date, user = user)
+
 
 @app.route('/registration_saved', methods = ["POST"])
 def after_register():
-	#check for department_id in database
-	a = request.form["department_id"]
-	d = Department.query.filter_by(department_id = a).first()
-	if d is None:
+	#update the user's profile
+	u = Author.query.filter_by(id = g.user.id).first()
+	if u is None:
 		flash('Invalid registration. Please enter a valid department ID.')
-		redirect(url_for('register'))
-	#query for user info
-	b = g.user.id
-	u = Author.query.filter_by(id = b).first()
-	#accepts, adds, and commits nickname, email, subject
-	u.user_department = d
+		return redirect(url_for('register'))	
 	u.username = request.form["username"]
+	u.user_department = request.form["department_id"]
 	u.subject = request.form["subject"]
+	db.session.add(u)
+	db.session.commit()
+	return redirect(url_for('index'))
+
+
+@app.route('/post_saved', methods = ["POST"])
+def add_post():
+	p = request.form["post"]
+	q = Post(body = p, timestamp = datetime.utcnow(), 
+					user_id = g.user.id)
+	db.session.add(q)
 	db.session.commit()
 	return redirect(url_for('index'))
 

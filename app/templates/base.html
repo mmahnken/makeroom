@@ -18,7 +18,12 @@
 			<div class="row-fluid">
 				<div class="span2"> Welcome to
 				<style> div {font-size: 25px} </style> <a href="{{ url_for('index') }}">Make Room</a> <br> <br>
-				{% if g.user.is_authenticated() %}
+				{% if g.user.is_authenticated() %}<br>
+				| <a href="{{url_for('index') }}"> Home </a><br><br>
+				| <a href="{{url_for('user', nickname = g.user.nickname) }}"> Dept Posts </a><br><br> 
+				| <a href="/register"> Join a department </a><br><br>
+				| <a href = "/api_key_form"> Connect with Learn Sprout <br><br>
+		
 				| <a href="{{ url_for('logout') }}">Logout</a>
 				{% endif %}
 		</div>

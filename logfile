@@ -56,3 +56,59 @@ ERROR:  column author.username does not exist at character 68
 STATEMENT:  SELECT author.id AS author_id, author.nickname AS author_nickname, author.username AS author_username, author.email AS author_email, author.role AS author_role, author.subject AS author_subject, author.user_department AS author_user_department 
 	FROM author 
 	WHERE author.id = 2
+ERROR:  relation "posts" does not exist at character 15
+STATEMENT:  SELECT * FROM Posts;
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  column "posts" does not exist at character 8
+STATEMENT:  SELECT posts FROM Author WHERE username = 'Mrs. X';
+ERROR:  syntax error at or near "/" at character 1
+STATEMENT:  /l
+	;
+ERROR:  syntax error at or near "rename" at character 1
+STATEMENT:  rename table post post_backup
+	;
+ERROR:  syntax error at or near "table" at character 25
+STATEMENT:  alter table post rename table post_backup;
+ERROR:  relation "post" already exists
+STATEMENT:  
+	CREATE TABLE post (
+		id SERIAL NOT NULL, 
+		body VARCHAR(140), 
+		timestamp TIMESTAMP WITHOUT TIME ZONE, 
+		user_id INTEGER, 
+		PRIMARY KEY (id)
+	)
+	
+	
+ERROR:  table "user" does not exist
+STATEMENT:  
+	DROP TABLE "user"
+ERROR:  column "subject" of relation "author" already exists
+STATEMENT:  
+	ALTER TABLE author ADD subject VARCHAR(120)
+ERROR:  relation "department" already exists
+STATEMENT:  
+	CREATE TABLE department (
+		department_id SERIAL NOT NULL, 
+		state VARCHAR(120), 
+		school_id VARCHAR(120), 
+		PRIMARY KEY (department_id)
+	)
+	
+	
+ERROR:  column "department_id" of relation "post" does not exist
+STATEMENT:  
+	ALTER TABLE post DROP COLUMN department_id
+ERROR:  column "username" of relation "author" already exists
+STATEMENT:  
+	ALTER TABLE author ADD username VARCHAR(64)
+ERROR:  column "id" of relation "department" already exists
+STATEMENT:  
+	ALTER TABLE department ADD id INTEGER NOT NULL
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction

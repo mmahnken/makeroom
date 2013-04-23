@@ -5,13 +5,15 @@ from migrate import *
 from migrate.changeset import schema
 pre_meta = MetaData()
 post_meta = MetaData()
-author = Table('author', post_meta,
+author = Table('author', pre_meta,
     Column('id', Integer, primary_key=True, nullable=False),
-    Column('nickname', String(length=64)),
-    Column('email', String(length=120)),
-    Column('role', SmallInteger, default=ColumnDefault(0)),
-    Column('subject', String(length=120)),
-    Column('school', String(length=120)),
+    Column('nickname', String),
+    Column('username', String),
+    Column('email', String),
+    Column('role', SmallInteger),
+    Column('subject', String),
+    Column('user_department', Integer),
+    Column('school', String),
 )
 
 
@@ -20,13 +22,11 @@ def upgrade(migrate_engine):
     # migrate_engine to your metadata
     pre_meta.bind = migrate_engine
     post_meta.bind = migrate_engine
-    post_meta.tables['author'].columns['school'].create()
-    post_meta.tables['author'].columns['subject'].create()
+    pre_meta.tables['author'].columns['school'].drop()
 
 
 def downgrade(migrate_engine):
     # Operations to reverse the above upgrade go here.
     pre_meta.bind = migrate_engine
     post_meta.bind = migrate_engine
-    post_meta.tables['author'].columns['school'].drop()
-    post_meta.tables['author'].columns['subject'].drop()
+    pre_meta.tables['author'].columns['school'].create()
