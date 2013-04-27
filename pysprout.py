@@ -8,27 +8,25 @@ class LearnSproutClient(object):
         url = "https://v1.api.learnsprout.com/org"
         payload = {"apikey": self.api_key}
         response = requests.get(url, params=payload)
-        return response.json
+        return response.json()
 
     def get_schools(self, org_id):
         url="https://v1.api.learnsprout.com/org/%s/school"%org_id
         payload = {"apikey": self.api_key}
         response = requests.get(url, params=payload)
-        return response.json
+        return response.json()
 
     def get_teachers(self, org_id, teacher):
-        url = "v1.api.learnsprout.com/org/%s/teacher"%org_id
+        url = "https://v1.api.learnsprout.com/org/%s/teacher"%org_id
         payload = {"apikey": self.api_key}
-        response = requests.get(url, parems=payload)
-        return response.json
+        response = requests.get(url, params=payload)
+        return response.json()
 
     def get_students(self, org_id, student):
-        url = "v1.api.learnsprout.com/org/%s/student" % org_id
+        url = "https://v1.api.learnsprout.com/org/%s/student" % org_id
         payload = {"apikey": self.api_key}
-        response = requests.get(url, parems=payload)
-        return response.json
-
-    def 
+        response = requests.get(url, params=payload)
+        return response.json()
 
 def test_sprout():
     lsc = LearnSproutClient("fcb8534c-e4ee-4e02-8b22-9328db1dac18")
@@ -40,7 +38,7 @@ def test_sprout():
     print schools
     school1 = schools['data'][0]['name']
     print school1
-    teachers = lsc.get_teachers(teachers[0][])
+    teachers = lsc.get_teachers(teachers[0]['id'])
 
 
 if __name__ == "__main__":
