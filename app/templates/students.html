@@ -1,0 +1,13 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="span9">
+	<h1> Your Students </h1>
+	{% if students != None %}
+		{% for s in students | sort(attribute='last_name') %}
+		<a href="/student_profile/{{s.last_name}}"> {{s.last_name}}, {{s.first_name}}</a><br><br>
+		{% endfor %}
+	{% endif %}
+</div>
+ {% endblock %}

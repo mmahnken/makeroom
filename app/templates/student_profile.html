@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="span9">
+	<h1>Student Profile</h1>
+	Name:  {{student_firstname}} {{student_lastname}} <br><br>
+	Student ID: {{student_id}} <br><br>
+	Grade: {{student_grade}} <br><br>
+	Birthday: {{student_birthday}} <br><br>
+		<form action='/mod_saved' method="POST" name="new_post">
+				{{form.hidden_tag()}}
+				<table>
+					<tr>
+						<h2> Post a classroom modification about {{student_firstname}}. </h2>
+					</tr>
+					<tr>
+						<td> Student ID </td>
+						<td>{{form.student_id(size = 30, maxlength = 140)}} </td>
+						<td> 
+						{% for error in form.errors.post %}
+						<span style = 'color: red;'>[{{error}}]</span><br>
+						{% endfor %}
+						</td>
+					</tr>
+						<tr>
+						<td> Post </td>
+						<td>{{form.post(size = 30, maxlength = 140)}} </td>
+						<td> 
+						{% for error in form.errors.post %}
+						<span style = 'color: red;'>[{{error}}]</span><br>
+						{% endfor %}
+						</td>
+					</tr>
+						<tr>
+						<td></td>
+						<td><input type="submit" value="Send to department page"></td>
+						<td></td>
+					</tr>
+				</table>
+			</form>
+		<form action='/goal_saved' method="POST" name="new_post">
+				{{form.hidden_tag()}}
+				<table>
+					<tr>
+						<h2> Post a learning goal for {{student_firstname}}. </h2>
+					</tr>
+					<tr>
+						<td> Student ID </td>
+						<td>{{form.student_id(size = 30, maxlength = 140)}} </td>
+						<td> 
+						{% for error in form.errors.post %}
+						<span style = 'color: red;'>[{{error}}]</span><br>
+						{% endfor %}
+						</td>
+					</tr>
+						<tr>
+						<td> Post </td>
+						<td>{{form.post(size = 30, maxlength = 140)}} </td>
+						<td> 
+						{% for error in form.errors.post %}
+						<span style = 'color: red;'>[{{error}}]</span><br>
+						{% endfor %}
+						</td>
+					</tr>
+						<tr>
+						<td></td>
+						<td><input type="submit" value="Send to department page"></td>
+						<td></td>
+					</tr>
+				</table>
+			</form>
+<div>
+	<h3> Goals:</h3>
+	{% for g in goals %}
+		<div>
+			<p>{{g.body}}</p>
+		
+	{% endfor %}
+
+<div>
+	<h3> Classroom Modifications </h3>
+		{% for m in mods %}
+		<div>
+			<p>{{m.body}}</p>
+		{% endfor %}
+
+{% endblock %}
+

@@ -112,3 +112,16 @@ LOG:  unexpected EOF on client connection with an open transaction
 LOG:  unexpected EOF on client connection with an open transaction
 LOG:  unexpected EOF on client connection with an open transaction
 LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  column "Mrs. Z" does not exist at character 39
+STATEMENT:  SELECT * FROM Author WHERE username = "Mrs. Z";
+ERROR:  syntax error at or near "." at character 1
+STATEMENT:  .mode columns
+	.header on
+	SELECT * FROM Author;
+ERROR:  syntax error at or near "." at character 1
+STATEMENT:  .mode columns;
+ERROR:  column post.student_id does not exist at character 116
+STATEMENT:  SELECT post.id AS post_id, post.body AS post_body, post.timestamp AS post_timestamp, post.user_id AS post_user_id, post.student_id AS post_student_id 
+	FROM post 
+	WHERE post.user_id = 2
+LOG:  unexpected EOF on client connection with an open transaction

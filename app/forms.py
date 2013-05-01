@@ -1,4 +1,4 @@
-from flask.ext.wtf import Form, TextField, BooleanField, Required
+from flask.ext.wtf import Form, TextField, TextAreaField, BooleanField, Required
 
 
 class LoginForm(Form):
@@ -13,10 +13,19 @@ class RegisterForm(Form):
 	department_id = TextField('department_id', validators = [Required()])
 
 class NewPostForm(Form):
-	post = TextField('post', validators = [Required()])
+	post = TextAreaField('post', validators = [Required()])
+	student_id = TextField('student_id', validators = [Required()])
+	is_goal = BooleanField('is_goal', default = False)
+	is_mod = BooleanField('is_mod', default = False)
 
 class ApiKeyForm(Form):
 	api_key = TextField('api_key', validators = [Required()])
+	org_id = TextField('org_id', validators = [Required()])
+
+# class CommentForm(Form):
+# 	post = TextAreaField('post', validators = [Required()])
+	
+
 
 
 

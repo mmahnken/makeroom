@@ -17,3 +17,14 @@ OPENID_PROVIDERS = [
 	{ 'name': 'MyOpenID', 'url': 'https://www.myopenid.com'}
 	]
 
+#email server
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = 25
+MAIL_USE_TLS = False
+MAIL_USE_SSL = True
+MAIL_USERNAME = 'specialeducationtool@gmail.com'
+MAIL_PASSWORD = 'happenstancecake'
+
+# administrator list
+ADMINS = ['specialeducationtool@gmail.com']
+

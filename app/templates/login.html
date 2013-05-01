@@ -15,11 +15,11 @@ function set_openid(openid, pr)
 	form.elements['openid'].value = openid
 }
 </script>
-<h1>Please Sign In <h1>
+<h1>Please Sign In </h1>
 	<form action="" method="post" name="login">
 		{{form.hidden_tag()}}
 		<p>
-			Optional: Connect with OpenID by selecting one of the providers below.<br>
+			Connect with OpenID by selecting one of the providers below.<br><br>
 			{{form.openid(size=80)}}
 			{% for error in form.errors.openid %}
 			<span style="color: red;">[{{error}}]</span>

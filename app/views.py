@@ -2,20 +2,23 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, oid 
 from forms import LoginForm, RegisterForm, NewPostForm, ApiKeyForm
-from models import Author, Department, Post, ROLE_USER, ROLE_ADMIN
+from models import Author, Department, Post, Student, Comment, Goal, Mod, ROLE_USER, ROLE_ADMIN
 from datetime import datetime 
+
+from pysprout import LearnSproutClient
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-	user = g.user 				#see the "before request" function
-	form = NewPostForm()
+	user = g.user 		#from @app.route.before_request
+	today = datetime.utcnow()
+	posts = Post.query.all()
 	return render_template("index.html",
-		title = 'Home',
-		user = user,
-		form = form)
-
+			title = 'Home',
+			today = today,
+			user = user,
+			posts = posts)
 
 @app.route("/login", methods = ['GET', 'POST'])
 @oid.loginhandler
@@ -96,9 +99,36 @@ def register():
 def register_api():
 	form = ApiKeyForm()
 	return render_template('api_key_form.html',
-		title = 'api_key_form', #from base.html
+		title = 'LearnSprout Registration',
 		form = form)
 
+@app.route('/api_key_registered', methods = ["POST"])
+def api_registered():
+	#Update the teacher's api_key and org_id.
+	u = Author.query.filter_by(id = g.user.id).first()
+	u.api_key = request.form['api_key']
+	u.org_id = request.form['org_id']
+	db.session.add(u)
+	db.session.commit()
+	#Register the client using form info and access the Learn Sprout JSON.
+	client = LearnSproutClient(g.user.api_key)
+	list_of_students = client.get_students(g.user.org_id, 'student')
+	print list_of_students
+	for i in list_of_students['data']:
+		#Add each student to the database.
+		id_check = i['id']
+		s = Student.query.filter_by(lsid = id_check).first()
+		if s != None:
+			continue
+		else:	
+			s = Student(first_name = i['first_name'], last_name = i['last_name'], 
+			birthday = i['birthday'], lsid = i['id'], 
+			grade = i['grade'], school_id = i['school']['id'], teacher_id = g.user.id)
+			db.session.add(s)
+	#Commit all new information to database.
+	db.session.commit()
+	flash('LearnSprout connection successful.')
+	return redirect(url_for('index'))
 
 @app.route('/user/<nickname>')
 @login_required
@@ -106,31 +136,21 @@ def user(nickname):
 	date = datetime.utcnow()
 	department_id = g.user.user_department
 	user = Author.query.filter_by(nickname = nickname).first()
-	department = Department.query.get(department_id)
+	if user.user_department:
+		#department = Department.query.get(department_id)
+		dept_posts = db.session.query(
+			Post).join(Post.Author).filter(
+			Author.user_department == g.user.user_department
+			)
+	else:
+		dept_posts =  None
+	user_posts = Post.query.filter_by(user_id = user.id).all()
 	if user == None:
 		flash('User' + nickname + " not found.")
 		return redirect(url_for('index'))
-	user_posts = Post.query.filter_by(user_id = user.id).all()
-	dept_posts = db.session.query(
-		Post).join(Post.Author).filter(
-		Author.user_department == g.user.user_department)
 	return render_template('profile.html', user_posts = user_posts,
 						date = date, user = user, 
 						dept_posts = dept_posts)
-	#put in jinja
-	for p in posts:
-		print p.body
-
-	# q = db.session.query(
-	# 	Author).join(Author.posts).filter(
-	# 	Author.user_department == g.user.user_department)
-	#count = db.session.query(Author).count()
-	# for num in range(count):
-	# 	post_count = q[num].posts.count()
-	# 	for num in range(post_count):
-	# 		print q[num].posts[num]
-	#return render_template("profile.html", posts = posts, 
-	#						date = date, user = user)
 
 
 @app.route('/registration_saved', methods = ["POST"])
@@ -148,14 +168,86 @@ def after_register():
 	return redirect(url_for('index'))
 
 
-@app.route('/post_saved', methods = ["POST"])
-def add_post():
+@app.route('/goal_saved', methods = ["POST", "GET"])
+def add_goal():
 	p = request.form["post"]
-	q = Post(body = p, timestamp = datetime.utcnow(), 
-					user_id = g.user.id)
+	s = request.form["student_id"]
+	timestamp = datetime.utcnow()
+	q = Post(body = p, timestamp = timestamp, 
+					user_id = g.user.id, student_id = s)
+	m = Goal(body = p, user_id = g.user.id)
 	db.session.add(q)
+	db.session.add(m)
 	db.session.commit()
-	return redirect(url_for('index'))
+	flash('Post successful.')
+	return redirect(url_for('user', nickname = g.user.nickname))
+
+@app.route('/mod_saved', methods = ["POST", "GET"])
+def add_mod():
+	p = request.form["post"]
+	s = request.form["student_id"]
+	timestamp = datetime.utcnow() 
+	q = Post(body = p, timestamp = timestamp, 
+					user_id = g.user.id, student_id = s)
+	m = Mod(body = p, user_id = g.user.id)
+	db.session.add(q)
+	db.session.add(m)
+	db.session.commit()
+	flash('Post successful.')
+	return redirect(url_for('user', nickname = g.user.nickname))
+
+@app.route('/student_profile/<student>')
+def view_student(student):
+	s = Student.query.filter_by(last_name = student).first()
+	student_id = s.id
+	student_firstname = s.first_name
+	student_lastname = s.last_name
+	student_grade = s.grade
+	student_birthday = s.birthday 
+	student_posts = s.posts
+	teachers = Author.query.filter_by(user_department = g.user.user_department).all() 
+	goals = Goal.query.filter_by(user_id=g.user.id)
+	mods = Mod.query.filter_by(user_id = g.user.id)
+	form = NewPostForm()
+	return render_template('student_profile.html',
+		student_id = student_id,
+		student_firstname = student_firstname,
+		student_lastname = student_lastname,
+		student_grade = student_grade,
+		student_birthday = student_birthday,
+		student_posts = student_posts,
+		teachers = teachers,
+		mods = mods,
+		goals = goals,
+		form = form)
+
+@app.route('/students')
+def show_students():
+	students = Student.query.filter_by(teacher_id = g.user.id).all()
+	return render_template('students.html', students = students)
+
+@app.route('/add_comment/<post>')
+def add_comment(post):
+	p = Post.query.filter_by(id = post).first()
+	post_id = p.id 
+	form = NewPostForm()
+	comments = Comment.query.filter_by(post_id = post).all()
+	return render_template('add_comment.html', form = form,
+		post = p,
+		post_id = post_id,
+		comments = comments)
+
+@app.route('/comment_saved/<post>', methods = ["POST", "GET"])
+def comment_saved(post):
+	p = Post.query.filter_by(id = post).first()
+	c = request.form["post"]
+	c = Comment(body = c, user_id = g.user.id, post_id = p.id)
+	db.session.add(c)
+	db.session.commit()
+	flash('Comment successful.')
+	return redirect("/index")
+
+
 
 
 
