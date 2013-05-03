@@ -22,9 +22,9 @@ class ApiKeyForm(Form):
 	api_key = TextField('api_key', validators = [Required()])
 	org_id = TextField('org_id', validators = [Required()])
 
-# class CommentForm(Form):
-# 	post = TextAreaField('post', validators = [Required()])
-	
+class CreateDepartmentForm(Form):
+	ls_school_id = TextField('ls_school_id', validators = [Required()])
+	state = TextField('state', validators = [Required()])
 
 
 

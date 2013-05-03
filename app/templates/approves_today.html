@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2> Posts You Approved Today: </h2>
+		<div>
+		{% if approves != None %}
+		<table class="table">
+		{% for a in approves | reverse %}
+		<dl>
+			<dt> <ul class = "inline">
+				<li class="content"><img src="{{user.avatar(70)}}"></td></li>
+				<li class="content">{{a.Author.username}} </li>
+				<li class="content"><i> {{a.Post.Student.first_name}}'s {{user.subject}} instructor</i></li>
+				</dt>
+			<dd class="content">  {{a.Post.body}} </dd>
+			<dd class="content"> <small> Posted on {{a.Post.timestamp.month}}/{{a.Post.timestamp.day}} at {{a.Post.timestamp.hour}}:{{a.Post.timestamp.minute}} </small></dd>
+		{% endfor %}</dl>
+		{% else %}
+		<p> <a href="/register"> No posts approved yet. </a> </p> 
+		{% endif %}
+		</div>
+{% endblock %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<div id ="body" class="span9">
+<div id ="body" class="span10">
 	<h1>Hello, 
 	{%if user.username %}
 		{{user.username}}!</h1><br>
@@ -8,34 +8,50 @@
 		{{user.nickname}} </h1><br>
 	{% endif %}
 	Date: {{today.month}}/{{today.day}}/{{today.year}}
+	{% if g.user.user_department != None %}
 	<h2> Today's Department Activity </h2>
-		<div>
-		<table class="table">
+		<div class="content">
+			There are {{count}} posts today.
+		</div><br>
 		{% for p in posts | reverse %}
-		<table>
-			<tr> 
-				<td>
-					<img src="{{p.Author.avatar(50)}}">
-				<td> {{p.Author.username}}
-					</td>
-				<td> ({{p.Author.subject}}) </td>
-				<td> concerning {{p.Student.first_name}} {{p.Student.last_name}} <br></td>
-				</small>
-			<tr> <a href = "/add_comment/{{p.id}}">{{p.body}}<a></tr>
-			<tr>   </tr>
-		</table>
+		<div>
+			<div id="content" class="span2">
+				<img src="{{p.Author.avatar(75)}}"></div>
+			<div>	
+				<p style="font-size: 15px;"> {{p.Author.username}} ({{p.Author.subject}}) concerning {{p.Student.first_name}} {{p.Student.last_name}}</p> 
+				<p>{{p.body}}</p>
+				<br><br>
+				<a href = "/add_comment/{{p.id}}" class = "btn"> Comment</a> <a href = "/approved_post/{{p.id}}" class = "btn approve"> Approve this post.</a></div>
+		</div>
+		<br>
+		<br>
 		{% endfor %}
-		
-		
-	<h3> Account Settings </h3>
-	<h4> Email: </h4> <p> {{user.email}} </p>
-	<h4> Admin?</h4> <p> {{user.role}} </p>
-	<h4> Subject: </h4> <p> {{user.subject}} </p>
-	{% if posts %}
-	<h4> Most Recent Post:</h4> <p> {{user.posts[-1].body}} </p>
+	{% else %}
+	<br><br><a href="/register"> Please join a department.</a>
 	{% endif %}
+	
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+	<script>
+		$(".approve").on("click", function(event){
+			event.preventDefault();
+			var link = $(event.target);
+			var href = link.attr("href");
+			console.log(href);
+			$.ajax({
+  				url: href
+					}).done(function(result) {
+						console.log(result);
+						if (result == "already approved"){
+							link.html("This is already approved.");
+						}				
+						else if (result == "approved"){
+							link.html("Successfully approved!");
+						}
+					});
+		});
+			
+	</script>
 </div>
 
 {% endblock %}

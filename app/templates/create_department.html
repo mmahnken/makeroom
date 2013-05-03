@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="span10">
+	<h2> Create a Department </h2> 
+	<form action="/create_department" method="post">
+		{{form.hidden_tag()}}
+		<p>
+			{{form.state}} State</p>
+			{% for error in form.errors.username %}
+			<span style="color: red;">[{{error}}]</span>
+			{% endfor %}
+		<p>
+			{{form.ls_school_id}} What is your school's LearnSprout id?</p>
+			{% for error in form.errors.subject %}
+			<span style="color: blue;">[{{error}}]</span>
+			{% endfor %}
+ 		<p>
+			<input type="submit" value="Create"></p>
+	</form>
+
+ {% endblock %}

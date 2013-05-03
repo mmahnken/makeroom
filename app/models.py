@@ -17,6 +17,8 @@ class Author(db.Model):
 	api_key = db.Column(db.String(64), index = True, unique = False)
 	org_id = db.Column(db.String(64), index = True, unique = False)
 	students = db.relationship('Student', backref = 'Author', lazy = 'dynamic')
+	comments = db.relationship('Comment', backref = 'Author', lazy = 'dynamic')
+	approves = db.relationship('Approve', backref = 'Author', lazy = 'dynamic')
 
 	def is_authenticated(self):
 		return True
@@ -42,10 +44,12 @@ class Post(db.Model):
 	body = db.Column(db.String(140))
 	timestamp = db.Column(db.DateTime)
 	user_id = db.Column(db.Integer, db.ForeignKey('author.id'))
+	post_department = db.Column(db.Integer, db.ForeignKey('department.id'))
 	student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
 	goals = db.relationship('Goal', backref = 'Post', lazy = 'dynamic')
-	mods = db.relationship('Mod', backref = 'Mod', lazy = 'dynamic')
-	comments = db.relationship('Comment', backref = 'Comment', lazy = 'dynamic')
+	mods = db.relationship('Mod', backref = 'Post', lazy = 'dynamic')
+	comments = db.relationship('Comment', backref = 'Post', lazy = 'dynamic')
+	approves = db.relationship('Approve', backref = 'Post', lazy = 'dynamic')
 
 
 	def __repr__(self):
@@ -53,9 +57,11 @@ class Post(db.Model):
 
 class Department(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
+	department_key = db.Column(db.Integer)
 	state = db.Column(db.String(120))
-	school_id = db.Column(db.String(120), index = True, unique = False)
+	ls_school_id = db.Column(db.String(120), db.ForeignKey('school.ls_school_id'))
 	authors = db.relationship('Author', backref = 'Department', lazy = 'dynamic')
+	posts = db.relationship('Post', backref = 'Department', lazy = 'dynamic')
 
 	def __repr__(self):
 		return '<Department %r>' % (self.id)
@@ -67,7 +73,7 @@ class Student(db.Model):
 	birthday = db.Column(db.String(120), index = False, unique = False)
 	lsid = db.Column(db.String(120), index = False, unique = True)
 	grade = db.Column(db.Integer(12), index = False, unique = False)
-	school_id = db.Column(db.String(120), index = True, unique = False)
+	ls_school_id = db.Column(db.String(120), index = True, unique = False)
 	posts = db.relationship('Post', backref = 'Student', lazy = 'dynamic')
 	teacher_id = db.Column(db.Integer, db.ForeignKey('author.id'))
 	
@@ -91,6 +97,19 @@ class Comment(db.Model):
 	body = db.Column(db.String(300))
 	post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 	user_id = db.Column(db.Integer, db.ForeignKey('author.id'))
+
+class Approve(db.Model):
+	id = db.Column(db.Integer, primary_key = True)
+	post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+	approver_id = db.Column(db.Integer, db.ForeignKey('author.id'))
+ 
+
+class School(db.Model):
+	ls_school_id = db.Column(db.Integer, primary_key = True)
+	#departments=db.relationship('Department', backref = 'Department', lazy = 'dynamic')
+	#students=db.relationship('Student', backref = 'School', lazy = 'dynamic')
+
+
 
 
 

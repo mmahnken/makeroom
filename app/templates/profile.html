@@ -1,12 +1,11 @@
 <!-- extend from base layout -->
 {% extends "base.html" %}
-
 {% block content %}
-<div class="span9">
+<div class="span10">
 <table>
-	<tr valign="top">
-		<td><img src="{{user.avatar(128)}}"></td> 
-		<td><h1> {{user.username}}</h1></td>
+	<tr vali class="content"gn="top">
+		<td class="content"><img src="{{user.avatar(128)}}"></td class="content"> 
+		<td class="content"><h1> {{user.username}}</h1></td class="content">
 	</tr>
 </table>	
 	<h2>
@@ -21,10 +20,10 @@
 		<table class="table">
 			<tr valign="top">
 			{% for p in user_posts | reverse %}
-				<td>{{p.body}}</td>
-				<td>Posted on {{p.timestamp.month}}/{{p.timestamp.day}} 
-					at {{p.timestamp.hour}}:{{p.timestamp.minute}}</td>
-				<td><small>Student ID: {{p.student_id}}</small></td>		
+				<td class="content">{{p.Student.first_name}} {{p.Student.last_name}}</td>	
+				<td class="content">{{p.body}}</td>
+				<td class="content">Posted on {{p.timestamp.month}}/{{p.timestamp.day}} 
+					at {{p.timestamp.hour}}:{{p.timestamp.minute}}</td>	
 			</tr>
 			{% endfor %}
 			</table>
@@ -33,26 +32,6 @@
 	{% endif %}
 	</div>
 				<br>
-	<h2> Department posts: </h2>
-		<div>
-		{% if dept_posts != None %}
-		<table class="table">
-		{% for p in dept_posts | reverse %}
-		<dl>
-			<dt> <small> <ul class = "inline">
-				<li><img src="{{p.Author.avatar(70)}}"></td></li>
-				<li> Author: {{p.Author.username}} </li>
-				<li> ({{p.Author.subject}}) </li>
-				<li> concerning {{p.Student.first_name}} </li> </ul>
-				</small></dt>
-			<dd> {{p.body}} </dd>
-			<dd><small> Posted on {{p.timestamp.month}}/{{p.timestamp.day}} at {{p.timestamp.hour}}:{{p.timestamp.minute}} </small></dd>
-		{% endfor %}</dl>
-		{% else %}
-		<p> <a href="/register"> Find your department. </a> </p> 
-		 <br>
-		{% endif %}
-		</div>
 
 
 {% endblock %}	 

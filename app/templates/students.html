@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="span9">
+<div class="span10">
 	<h1> Your Students </h1>
 	{% if students != None %}
 		{% for s in students | sort(attribute='last_name') %}

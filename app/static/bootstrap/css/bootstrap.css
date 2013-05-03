@@ -290,6 +290,7 @@ a:focus {
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
   width: 940px;
+  background-color: #000000;
 }
 
 .span12 {
@@ -4358,13 +4359,14 @@ input[type="submit"].btn.btn-mini {
   *z-index: 2;
   margin-bottom: 20px;
   overflow: visible;
+  background-color: #ffffff;
 }
 
 .navbar-inner {
   min-height: 40px;
   padding-right: 20px;
   padding-left: 20px;
-  background-color: #fafafa;
+  background-color: #ffffff;
   background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
   background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
@@ -4418,14 +4420,14 @@ input[type="submit"].btn.btn-mini {
   text-decoration: none;
 }
 
-.navbar-text {
+.r-text {
   margin-bottom: 0;
   line-height: 40px;
-  color: #777777;
+  color: #838B83;
 }
 
 .navbar-link {
-  color: #777777;
+  color: #000000;
 }
 
 .navbar-link:hover,

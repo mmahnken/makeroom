@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+	<h3> Account Settings </h3>
+	<h4> Email: </h4> <p> {{user.email}} </p>
+	<h4> Admin?</h4> <p> {{user.role}} </p>
+	<h4> Subject: </h4> <p> {{user.subject}} </p>
+	{% if posts %}
+	<h4> Most Recent Post:</h4> <p> {{user.posts[-1].body}} </p>
+	{% endif %}
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+{% endblock %}

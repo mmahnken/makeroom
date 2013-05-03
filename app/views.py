@@ -1,9 +1,10 @@
 from flask import render_template, flash, redirect, session, url_for, request, g 
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, oid 
-from forms import LoginForm, RegisterForm, NewPostForm, ApiKeyForm
-from models import Author, Department, Post, Student, Comment, Goal, Mod, ROLE_USER, ROLE_ADMIN
+from forms import LoginForm, RegisterForm, NewPostForm, ApiKeyForm, CreateDepartmentForm
+from models import Author, Department, Post, Student, Comment, Approve, Goal, Mod, ROLE_USER, ROLE_ADMIN
 from datetime import datetime 
+import random
 
 from pysprout import LearnSproutClient
 
@@ -11,14 +12,20 @@ from pysprout import LearnSproutClient
 @app.route('/index')
 @login_required
 def index():
-	user = g.user 		#from @app.route.before_request
-	today = datetime.utcnow()
-	posts = Post.query.all()
+	user = g.user 
+	today = datetime.today()
+	posts = db.session.query(Post).filter(Post.timestamp >= today).filter_by(user_id= g.user.id).all()
+	count = 0
+	for p in posts:
+		count += 1
+	print posts
+	#posts = Post.query.filter_by(post_department = user.user_department).all()
 	return render_template("index.html",
 			title = 'Home',
 			today = today,
 			user = user,
-			posts = posts)
+			posts = posts, 
+			count = count)
 
 @app.route("/login", methods = ['GET', 'POST'])
 @oid.loginhandler
@@ -125,6 +132,13 @@ def api_registered():
 			birthday = i['birthday'], lsid = i['id'], 
 			grade = i['grade'], school_id = i['school']['id'], teacher_id = g.user.id)
 			db.session.add(s)
+		school_check = i['school']
+		school = School.query.filter_by(ls_school_id = school_check).first()
+		if school != None:
+			continue
+		else:
+			school = School(ls_school_id = i['school'])
+			db.session.add(school)
 	#Commit all new information to database.
 	db.session.commit()
 	flash('LearnSprout connection successful.')
@@ -136,7 +150,7 @@ def user(nickname):
 	date = datetime.utcnow()
 	department_id = g.user.user_department
 	user = Author.query.filter_by(nickname = nickname).first()
-	if user.user_department:
+	if g.user.user_department:
 		#department = Department.query.get(department_id)
 		dept_posts = db.session.query(
 			Post).join(Post.Author).filter(
@@ -144,13 +158,22 @@ def user(nickname):
 			)
 	else:
 		dept_posts =  None
-	user_posts = Post.query.filter_by(user_id = user.id).all()
+	user_posts = Post.query.filter_by(user_id = g.user.id).all()
 	if user == None:
 		flash('User' + nickname + " not found.")
 		return redirect(url_for('index'))
 	return render_template('profile.html', user_posts = user_posts,
 						date = date, user = user, 
 						dept_posts = dept_posts)
+
+@app.route('/department_posts/<department>')
+def department_posts(department):
+	date = datetime.utcnow()
+	department_posts = Post.query.filter_by(post_department = department).all()
+	return render_template('department_posts.html', 
+							department_posts = department_posts,
+							date = date)
+
 
 
 @app.route('/registration_saved', methods = ["POST"])
@@ -174,7 +197,8 @@ def add_goal():
 	s = request.form["student_id"]
 	timestamp = datetime.utcnow()
 	q = Post(body = p, timestamp = timestamp, 
-					user_id = g.user.id, student_id = s)
+					user_id = g.user.id, student_id = s,
+					post_department = g.user.user_department)
 	m = Goal(body = p, user_id = g.user.id)
 	db.session.add(q)
 	db.session.add(m)
@@ -188,7 +212,8 @@ def add_mod():
 	s = request.form["student_id"]
 	timestamp = datetime.utcnow() 
 	q = Post(body = p, timestamp = timestamp, 
-					user_id = g.user.id, student_id = s)
+					user_id = g.user.id, student_id = s,
+					post_department = g.user.user_department)
 	m = Mod(body = p, user_id = g.user.id)
 	db.session.add(q)
 	db.session.add(m)
@@ -246,6 +271,49 @@ def comment_saved(post):
 	db.session.commit()
 	flash('Comment successful.')
 	return redirect("/index")
+
+@app.route('/account/<user>')
+def account(user):
+	user = g.user
+	return render_template('account.html', 
+				user = user)
+
+@app.route('/approved_post/<post>')
+def approved_post(post):
+	user = g.user
+	check = Approve.query.filter_by(post_id = post).first()
+	if check is None:
+		a = Approve(approver_id =user.id, post_id = post)
+		db.session.add(a)
+		db.session.commit()
+		return "approved"
+	else: 
+		return "already approved"
+
+@app.route('/create_department', methods = ["POST", "GET"])
+def create_department():
+	user = g.user
+	department_key = random.randint(1000000, 9000000)
+	d = Department(department_key = department_key, state = request.form["state"], 
+		ls_school_id = request.form["ls_school_id"])
+	db.session.add(d)
+	db.session.commit()
+	flash('Department created. Your department key is' + str(department_key))
+	return redirect("/index")
+
+@app.route('/form_create_department')
+def form_create_department():
+	form = CreateDepartmentForm()
+	return render_template('create_department.html', form = form)
+
+@app.route('/today_approves')
+def today_approves():
+	a = Author.query.filter_by(id = g.user.id).first()
+	approves = a.approves 
+	user = a 
+	return render_template('approves_today.html', approves = approves, user = user)
+
+
 
 
 
