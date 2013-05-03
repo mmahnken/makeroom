@@ -28,7 +28,8 @@ def index():
 			posts = posts, 
 			count = count)
 	else: 
-		return render_template("index.html", title = "Home")
+		return render_template("index.html", title = "Home",
+			user = user)
 
 
 @app.route("/login", methods = ['GET', 'POST'])
