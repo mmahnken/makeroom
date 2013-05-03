@@ -14,7 +14,7 @@ from pysprout import LearnSproutClient
 def index():
 	user = g.user 
 	today = datetime.today()
-	if g.user.nickname:
+	if g.user.username:
 		posts = db.session.query(Post).filter(Post.timestamp >= today).filter_by(user_id= g.user.id).all()
 		count = 0
 		for p in posts:
@@ -30,7 +30,7 @@ def index():
 	else: 
 		return render_template("index.html", title = "Home")
 
-	
+
 @app.route("/login", methods = ['GET', 'POST'])
 @oid.loginhandler
 def login():
