@@ -72,7 +72,6 @@ class Student(db.Model):
 	last_name = db.Column(db.String(120), index = True, unique = False)
 	birthday = db.Column(db.String(120), index = False, unique = False)
 	lsid = db.Column(db.String(120), index = False, unique = True)
-	grade = db.Column(db.Integer(12), index = False, unique = False)
 	ls_school_id = db.Column(db.String(120), index = True, unique = False)
 	posts = db.relationship('Post', backref = 'Student', lazy = 'dynamic')
 	teacher_id = db.Column(db.Integer, db.ForeignKey('author.id'))
@@ -104,8 +103,9 @@ class Approve(db.Model):
 	approver_id = db.Column(db.Integer, db.ForeignKey('author.id'))
  
 
-class School(db.Model):
-	ls_school_id = db.Column(db.Integer, primary_key = True)
+# class School(db.Model):
+# 	id = db.Column(db.Integer, primary_key = True)
+# 	ls_school_id = db.Column(db.String(80))
 	#departments=db.relationship('Department', backref = 'Department', lazy = 'dynamic')
 	#students=db.relationship('Student', backref = 'School', lazy = 'dynamic')
 

@@ -135,15 +135,15 @@ def api_registered():
 		else:	
 			s = Student(first_name = i['first_name'], last_name = i['last_name'], 
 			birthday = i['birthday'], lsid = i['id'], 
-			grade = i['grade'], school_id = i['school']['id'], teacher_id = g.user.id)
+			teacher_id = g.user.id)
 			db.session.add(s)
-		school_check = i['school']
-		school = School.query.filter_by(ls_school_id = school_check).first()
-		if school != None:
-			continue
-		else:
-			school = School(ls_school_id = i['school'])
-			db.session.add(school)
+		# school_check = i['school']['id']
+		# school = School.query.filter_by(ls_school_id = school_check).first()
+		# if school != None:
+		# 	continue
+		# else:
+		# 	school = School(ls_school_id = i['school'])
+		# 	db.session.add(school)
 	#Commit all new information to database.
 	db.session.commit()
 	flash('LearnSprout connection successful.')
@@ -188,12 +188,18 @@ def after_register():
 	if u is None:
 		flash('Invalid registration. Please enter a valid department ID.')
 		return redirect(url_for('register'))	
-	u.username = request.form["username"]
-	u.user_department = request.form["department_id"]
-	u.subject = request.form["subject"]
-	db.session.add(u)
-	db.session.commit()
-	return redirect(url_for('index'))
+	d = request.form["department_id"]
+	department_check = Department.query.filter_by(department_key = d).first()
+	if department_check is None:
+		flash("Department not found.")
+		return redirect(url_for('register'))
+	else:
+		u.username = request.form["username"]
+		u.user_department = department_check.id
+		u.subject = request.form["subject"]
+		db.session.add(u)
+		db.session.commit()
+		return redirect(url_for('index'))
 
 
 @app.route('/goal_saved', methods = ["POST", "GET"])
@@ -232,7 +238,6 @@ def view_student(student):
 	student_id = s.id
 	student_firstname = s.first_name
 	student_lastname = s.last_name
-	student_grade = s.grade
 	student_birthday = s.birthday 
 	student_posts = s.posts
 	teachers = Author.query.filter_by(user_department = g.user.user_department).all() 
@@ -243,7 +248,6 @@ def view_student(student):
 		student_id = student_id,
 		student_firstname = student_firstname,
 		student_lastname = student_lastname,
-		student_grade = student_grade,
 		student_birthday = student_birthday,
 		student_posts = student_posts,
 		teachers = teachers,
