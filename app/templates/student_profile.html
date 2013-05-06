@@ -70,16 +70,23 @@
 		</div>
 <div class="span5 content">
 	<h1> Goals:</h1>
+	{% if goals != None %}
 	{% for g in goals %}
-			<p>{{g.body}}</p>
-		
+			<p>{{g.body}}</p>	
 	{% endfor %}
+	{% else %}
+	No goals yet.
+	{% endif %}
 
 <br>
 	<h1> Classroom Modifications </h1>
+	{% if mods != None %}	
 		{% for m in mods %}
 			<p>{{m.body}}</p>
 		{% endfor %}
+	{% else %}
+	No modifications yet.
+	{% endif %}
 </div>
 {% endblock %}
 

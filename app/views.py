@@ -92,7 +92,6 @@ def before_request():
 	# the g object in order to have better access to the current user.
 	g.user = current_user
 
-
 @app.route('/logout')
 def logout():
 	logout_user()
@@ -220,16 +219,18 @@ def add_goal():
 def add_mod():
 	p = request.form["post"]
 	s = request.form["student_id"]
-	timestamp = datetime.utcnow() 
+	timestamp = datetime.utcnow()
+	student = Student.query.filter_by(id = s).first() 
+	last_name = student.last_name
 	q = Post(body = p, timestamp = timestamp, 
 					user_id = g.user.id, student_id = s,
 					post_department = g.user.user_department)
-	m = Mod(body = p, user_id = g.user.id)
+	m = Mod(body = p, user_id = g.user.id, student_id = s)
 	db.session.add(q)
 	db.session.add(m)
 	db.session.commit()
 	flash('Post successful.')
-	return redirect(url_for('user', nickname = g.user.nickname))
+	return redirect(url_for('index'))
 
 @app.route('/student_profile/<student>')
 def view_student(student):
@@ -240,8 +241,10 @@ def view_student(student):
 	student_birthday = s.birthday 
 	student_posts = s.posts
 	teachers = Author.query.filter_by(user_department = g.user.user_department).all() 
-	goals = Goal.query.filter_by(user_id=g.user.id)
-	mods = Mod.query.filter_by(user_id = g.user.id)
+	#goals = Goal.query.filter_by(user_id=g.user.id)
+	#mods = Mod.query.filter_by(user_id = g.user.id)
+	goals = s.goals
+	mods = s.mods
 	form = NewPostForm()
 	return render_template('student_profile.html',
 		student_id = student_id,

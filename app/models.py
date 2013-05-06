@@ -74,6 +74,8 @@ class Student(db.Model):
 	lsid = db.Column(db.String(120), index = False, unique = True)
 	ls_school_id = db.Column(db.String(120), index = True, unique = False)
 	posts = db.relationship('Post', backref = 'Student', lazy = 'dynamic')
+	goals = db.relationship('Goal', backref = 'Student', lazy = 'dynamic')
+	mods = db.relationship('Mod', backref = 'Student', lazy = 'dynamic')
 	teacher_id = db.Column(db.Integer, db.ForeignKey('author.id'))
 	
 	def __repr__(self):
@@ -84,12 +86,14 @@ class Goal(db.Model):
 	body = db.Column(db.String(200))
 	post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 	user_id = db.Column(db.Integer, db.ForeignKey('author.id'))
+	student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
 
 class Mod(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	body = db.Column(db.String(200))	
 	post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 	user_id = db.Column(db.Integer, db.ForeignKey('author.id'))
+	student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
 
 class Comment(db.Model):
 	id = db.Column(db.Integer, primary_key = True)

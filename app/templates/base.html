@@ -56,7 +56,7 @@
 
 
 				{% elif g.user.is_authenticated() %}
-				<div id="header" class="container-fluid">
+		<div id="header" class="container-fluid">
 			<div class="row-fluid">
 				<div class="span2 navhue">
 				<style> div {font-size: 25px} </style> <!-- <a href="{{ url_for('index') }}">Make Room</a> <br> --> <br>
@@ -68,13 +68,13 @@
 				| <a href="/register"> Join a department </a><br><br>
 				| <a href = "/api_key_form"> Connect with Learn Sprout </a> <br><br>
 				| <a href = "/form_create_department">Create a Department</a><br><br>
-			</div>
+				</div>
 			</div>
 				{% endif %}
-			 </body>
-
 		</div>
+
 		<hr>
+		
 		{% with messages = get_flashed_messages() %}
 		{% if messages %}
 		<ul class=flashes> 
@@ -85,5 +85,6 @@
 		{% endif %}
 		{% endwith %}
 		{% block content %}{% endblock %}
+	</hr>
 	</body>
 </html>
