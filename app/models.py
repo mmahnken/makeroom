@@ -103,13 +103,4 @@ class Approve(db.Model):
 	approver_id = db.Column(db.Integer, db.ForeignKey('author.id'))
  
 
-# class School(db.Model):
-# 	id = db.Column(db.Integer, primary_key = True)
-# 	ls_school_id = db.Column(db.String(80))
-	#departments=db.relationship('Department', backref = 'Department', lazy = 'dynamic')
-	#students=db.relationship('Student', backref = 'School', lazy = 'dynamic')
-
-
-
-
 
