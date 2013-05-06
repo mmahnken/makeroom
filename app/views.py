@@ -15,12 +15,11 @@ def index():
 	user = g.user 
 	today = datetime.today()
 	if g.user.username:
-		posts = db.session.query(Post).filter(Post.timestamp >= today).filter_by(user_id= g.user.id).all()
+		d = Department.query.filter_by(id = g.user.user_department).first()
+		posts = d.posts
 		count = 0
 		for p in posts:
 			count += 1
-		print posts
-	#posts = Post.query.filter_by(post_department = user.user_department).all()
 		return render_template("index.html",
 			title = 'Home',
 			today = today,
@@ -131,7 +130,7 @@ def api_registered():
 		id_check = i['id']
 		s = Student.query.filter_by(lsid = id_check).first()
 		if s != None:
-			continue
+			s.teacher_id = g.user.id 
 		else:	
 			s = Student(first_name = i['first_name'], last_name = i['last_name'], 
 			birthday = i['birthday'], lsid = i['id'], 
@@ -284,8 +283,39 @@ def comment_saved(post):
 @app.route('/account/<user>')
 def account(user):
 	user = g.user
-	return render_template('account.html', 
+	if user.username != None:
+		username = user.username
+	else:
+		username = None
+	if user.subject != None:
+		subject = user.subject
+	else:
+		subject = None
+	if user.user_department != None:
+		department = Department.query.filter_by(id = user.user_department).first()
+		department_key = department.department_key
+		department_state = department.state
+	else:
+		department = None
+		department_key = None
+		department_state = None
+	if user.api_key != None:
+		api_key = user.api_key
+	else:
+		api_key = None
+	if user.org_id != None:
+		org_id = user.org_id
+	else:
+		org_id = None
+	return render_template('account.html', username=username,
+				subject = subject, department = department,
+				department_key = department_key, 
+				department_state = department_state,
+				api_key = api_key,
+				org_id = org_id,
 				user = user)
+
+
 
 @app.route('/approved_post/<post>')
 def approved_post(post):

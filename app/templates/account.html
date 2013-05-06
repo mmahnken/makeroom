@@ -1,12 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
-	<h3> Account Settings </h3>
+<div class="span10">
+	<h1> Your Account Settings </h1>
 	<h4> Email: </h4> <p> {{user.email}} </p>
-	<h4> Admin?</h4> <p> {{user.role}} </p>
-	<h4> Subject: </h4> <p> {{user.subject}} </p>
+	<h4> Your Name: </h4> <p> {{username}} </p>
+	<h4> Subject: </h4> <p> {{subject}} </p>
+	<h4> Department Key: </h4> <p> {{department_key}}</p>
+	<h4> State: </h4> <p> {{department_state}}
+	<h3> Your LearnSprout Info </h3>
+	<h4> API Key: </h4> {{api_key}}
+	<h4> Organization ID (LearnSprout): </h4> <p>{{org_id}}
 	{% if posts %}
 	<h4> Most Recent Post:</h4> <p> {{user.posts[-1].body}} </p>
 	{% endif %}
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+</div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h2> Department posts: </h2>
-		<div>
+		<div class="span10">
 		{% if department_posts != None %}
 		<table class="table">
 		{% for p in department_posts | reverse %}
@@ -16,7 +16,6 @@
 		{% endfor %}</dl>
 		{% else %}
 		<p> <a href="/register"> Find your department. </a> </p> 
-		 <br>
 		{% endif %}
 		</div>
 {% endblock %}

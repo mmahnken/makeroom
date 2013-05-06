@@ -59,7 +59,7 @@ class Department(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	department_key = db.Column(db.Integer)
 	state = db.Column(db.String(120))
-	ls_school_id = db.Column(db.String(120), db.ForeignKey('school.ls_school_id'))
+	ls_school_id = db.Column(db.String(120))
 	authors = db.relationship('Author', backref = 'Department', lazy = 'dynamic')
 	posts = db.relationship('Post', backref = 'Department', lazy = 'dynamic')
 

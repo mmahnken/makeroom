@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h2> Posts You Approved Today:</h2>
-		<div>
+		<div class="span10">
 		{% if approves != None %}
 		<table class="table">
 		{% for a in approves | reverse %}

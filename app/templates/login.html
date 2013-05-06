@@ -15,6 +15,7 @@ function set_openid(openid, pr)
 	form.elements['openid'].value = openid
 }
 </script>
+<div class="span8 popover-title">
 <h1>Please Sign In </h1>
 	<form action="" method="post" name="login">
 		{{form.hidden_tag()}}
@@ -43,6 +44,7 @@ function set_openid(openid, pr)
 		<p>
 			<input type="submit" value="Sign In"></p>
 	</form>
+</div>
 {% endblock %}
 
 

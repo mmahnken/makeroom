@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="span10">
+<div class="span5 content">
 	<h1>Student Profile</h1>
 	Name:  {{student_firstname}} {{student_lastname}} <br><br>
-	Student ID: {{student_id}} <br><br>
+	Student ID: {{student_id}} <br><br>						
 	Birthday: {{student_birthday}} <br><br>
 		<form action='/mod_saved' method="POST" name="new_post">
 				{{form.hidden_tag()}}
 				<table>
 					<tr>
-						<h2> Post a classroom modification about {{student_firstname}}. </h2>
+						<h4> Post a classroom modification about {{student_firstname}}. </h4>
 					</tr>
 					<tr>
 						<td> Student ID </td>
@@ -40,7 +40,7 @@
 				{{form.hidden_tag()}}
 				<table>
 					<tr>
-						<h2> Post a learning goal for {{student_firstname}}. </h2>
+						<h4> Post a learning goal for {{student_firstname}}. </h4>
 					</tr>
 					<tr>
 						<td> Student ID </td>
@@ -67,20 +67,19 @@
 					</tr>
 				</table>
 			</form>
-<div>
-	<h3> Goals:</h3>
+		</div>
+<div class="span5 content">
+	<h1> Goals:</h1>
 	{% for g in goals %}
-		<div>
 			<p>{{g.body}}</p>
 		
 	{% endfor %}
 
-<div>
-	<h3> Classroom Modifications </h3>
+<br>
+	<h1> Classroom Modifications </h1>
 		{% for m in mods %}
-		<div>
 			<p>{{m.body}}</p>
 		{% endfor %}
-
+</div>
 {% endblock %}
 
