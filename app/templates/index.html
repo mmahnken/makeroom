@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-<div id ="body" class="span10">
-	<h1>Hello, 
+<div id ="body" class="span10"> 
 	{%if user.username %}
-		{{user.username}}!</h1><br>
+		<h1>Hello, {{user.username}}!</h1><br>
 		Date: {{today.month}}/{{today.day}}/{{today.year}}
 	{% else %}
-		{{user.nickname}} </h1><br>
+		<h1>Hello,{{user.nickname}} </h1><br>
 	{% endif %}
 	
 	{% if g.user.user_department != None %}
@@ -28,9 +27,9 @@
 		<br>
 		{% endfor %}
 	{% else %}
-	<br><br><div class="span10"><a href="/register"> Please join a department.</a></div>
+	<br><br><div><a href="/register"> Please join a department.</a></div>
 	{% endif %}
-	
+</div>
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
 	<script>
@@ -53,7 +52,7 @@
 		});
 			
 	</script>
-</div>
+
 
 {% endblock %}
 	

@@ -37,7 +37,7 @@
 			</div>
 		</div>
 		{% else %}
-		Please <a href="/login">login</a>.
+		<div class="span10">Please <a href="/login">login</a>.</div>
 		{% endif %}
 		{% if g.user.user_department != None %}
 		<div id="header" class="container-fluid">
@@ -74,7 +74,7 @@
 		</div>
 
 		<hr>
-		
+
 		{% with messages = get_flashed_messages() %}
 		{% if messages %}
 		<ul class=flashes> 

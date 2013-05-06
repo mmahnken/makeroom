@@ -204,11 +204,12 @@ def after_register():
 def add_goal():
 	p = request.form["post"]
 	s = request.form["student_id"]
+	student = Student.query.filter_by(id = s).first() 
 	timestamp = datetime.utcnow()
 	q = Post(body = p, timestamp = timestamp, 
 					user_id = g.user.id, student_id = s,
 					post_department = g.user.user_department)
-	m = Goal(body = p, user_id = g.user.id)
+	m = Goal(body = p, user_id = g.user.id, student_id = s)
 	db.session.add(q)
 	db.session.add(m)
 	db.session.commit()
