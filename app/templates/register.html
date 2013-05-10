@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="span10 popover-title">
+<div class="popover-title span10">
 	<h2> Register with your department </h2> 
 	<form action="/registration_saved" method="post" name="register">
 		{{form.hidden_tag()}}
@@ -22,6 +22,8 @@
  		<p>
 			<input type="submit" value="Sign In"></p>
 	</form>
+	<h3> Want to join a sample department? </h3>
+	<p> Department Key: 6627554 </p>
 </div>
 
  {% endblock %}

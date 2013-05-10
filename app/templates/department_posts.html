@@ -11,7 +11,7 @@
 				<li class="content">{{p.Author.username}} </li>
 				<li class="content"><i> {{p.Student.first_name}}'s {{p.Author.subject}} instructor</i></li>
 				</dt>
-			<dd class="content">  {{p.body}} </dd>
+			<dd class="content"><a href="{{url_for('add_comment', post=p.id)}}"> {{p.body}}</a> </dd>
 			<dd class="content"> <small> Posted on {{p.timestamp.month}}/{{p.timestamp.day}} at {{p.timestamp.hour}}:{{p.timestamp.minute}} </small></dd>
 		{% endfor %}</dl>
 		{% else %}

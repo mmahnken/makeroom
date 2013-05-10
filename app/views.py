@@ -341,7 +341,7 @@ def create_department():
 		ls_school_id = request.form["ls_school_id"])
 	db.session.add(d)
 	db.session.commit()
-	flash('Department created. Your department key is' + str(department_key))
+	flash('Department created. Your department key is ' + str(department_key))
 	return redirect("/index")
 
 @app.route('/form_create_department')

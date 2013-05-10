@@ -37,44 +37,42 @@
 			</div>
 		</div>
 		{% else %}
-		<div class="span10">Please <a href="/login">login</a>.</div>
+		<div class="span10">Please <a href="/login">login</a></div>
 		{% endif %}
+
 		{% if g.user.user_department != None %}
-		<div id="header" class="container-fluid">
+		<div class="container-fluid span2">
 			<div class="row-fluid">
-				<div class="span2 navhue">
-				<style> div {font-size: 25px} </style> <!-- <a href="{{ url_for('index') }}">Make Room</a> <br> --> <br>
-				| <a href="{{url_for('index') }}"> Home </a><br><br>
-				| <a href="{{url_for('user', nickname = g.user.nickname) }}"> Your Posts </a><br><br>
-                | <a href="/students"> All Students</a><br><br>
-                | <a href="{{url_for('account', user = g.user.id)}}">Your Account</a><br><br> 
-                | <a href="{{url_for('today_approves')}}">Posts You Approved Today</a><br>
+				<style> div {font-size: 25px} </style><br>
+				<a href="{{url_for('index') }}"> Home </a><br><br>
+				<a href="{{url_for('user', nickname = g.user.nickname) }}"> Your Posts </a><br><br>
+                <a href="/students"> All Students</a><br><br>
+               	<a href="{{url_for('account', user = g.user.id)}}">Your Account</a><br><br> 
+                <a href="{{url_for('today_approves')}}">Posts You Approved Today</a><br>
                 <br>____________<br><br>
-				| <a href="/register"> Join a department </a><br><br>
-				| <a href = "/api_key_form"> Connect with Learn Sprout </a> <br><br>
-				| <a href = "/form_create_department">Create a Department</a><br><br>
-
-
+				<a href="/register"> Join a department </a><br><br>
+				<a href = "/api_key_form"> Connect with Learn Sprout </a> <br><br>
+				<a href = "/form_create_department">Create a Department</a><br><br>
+			</div>
+		</div>
+	</div>
 				{% elif g.user.is_authenticated() %}
-		<div id="header" class="container-fluid">
+		<div class="container-fluid span2">
 			<div class="row-fluid">
-				<div class="span2 navhue">
-				<style> div {font-size: 25px} </style> <!-- <a href="{{ url_for('index') }}">Make Room</a> <br> --> <br>
-				| <a href="{{url_for('index') }}"> Home </a><br><br>
-				| <a href="{{url_for('user', nickname = g.user.nickname) }}"> All Posts </a><br><br>
-                | <a href="/students"> All Students</a><br><br><br>
-                | <a href="{{url_for('account', user = g.user.id)}}"> Your Account</a><br><br>
+				<style> div {font-size: 25px} </style> <br>
+				<a href="{{url_for('index') }}"> Home</a><br><br>
+				<a href="{{url_for('user', nickname = g.user.nickname) }}"> All Posts </a><br><br>
+                <a href="/students"> All Students</a><br><br><br>
+                <a href="{{url_for('account', user = g.user.id)}}"> Your Account</a><br><br>
              	<br>___________<br><br>
-				| <a href="/register"> Join a department </a><br><br>
-				| <a href = "/api_key_form"> Connect with Learn Sprout </a> <br><br>
-				| <a href = "/form_create_department">Create a Department</a><br><br>
+				<a href="/register"> Join a department </a><br><br>
+				<a href = "/api_key_form"> Connect with Learn Sprout </a> <br><br>
+				<a href = "/form_create_department">Create a Department</a><br><br>
 				</div>
 			</div>
-				{% endif %}
 		</div>
-
+			{% endif %}
 		<hr>
-
 		{% with messages = get_flashed_messages() %}
 		{% if messages %}
 		<ul class=flashes> 
@@ -84,7 +82,7 @@
 		</ul>
 		{% endif %}
 		{% endwith %}
-		{% block content %}{% endblock %}
+		<div class="span9">{% block content %}</div>
 	</hr>
 	</body>
-</html>
+</html>{% endblock %}
